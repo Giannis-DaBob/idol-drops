@@ -333,7 +333,7 @@ main{position:relative;z-index:1}
         <br/>
         <button class="pin-submit" onclick="checkPin()">Unlock</button>
         <p class="pin-error" id="pin-error">Wrong PIN, try again.</p>
-        <p style="color:var(--muted);font-size:.74rem;margin-top:18px">Default PIN: <strong style="color:var(--text)">1234</strong> — change it in the HTML!</p>
+
       </div>
     </div>
     <div id="admin-logged" style="display:none">
@@ -341,6 +341,7 @@ main{position:relative;z-index:1}
         <button class="admin-tab active" onclick="setAdminTab('items')">Items</button>
         <button class="admin-tab" onclick="setAdminTab('add')">Add new</button>
         <button class="admin-tab" onclick="setAdminTab('groups')">Groups</button>
+        <button class="admin-tab" onclick="setAdminTab('requests')" id="req-tab">Requests</button>
       </div>
       <div class="admin-content active" id="tab-items">
         <div class="admin-item-list" id="admin-item-list"></div>
@@ -367,22 +368,27 @@ main{position:relative;z-index:1}
         <button class="btn-add" onclick="addGroup()">Add group</button>
         <p class="mini-success" id="group-success">Added! 🌸</p>
       </div>
+      <div class="admin-content" id="tab-requests">
+        <div id="req-list"></div>
+        <p id="no-req-msg" style="color:var(--muted);font-size:.85rem;text-align:center;display:none">No requests yet!</p>
+      </div>
     </div>
   </div>
 </div>
 
 <script>
-const ADMIN_PIN='1234';
+const ADMIN_PIN='1212';
 const EMOJIS=['🌸','🩷','💜','🌙','⭐','🎀','🌷','💫','🦋','🌺','🎵','✨'];
 
 let state={
   items:JSON.parse(localStorage.getItem('id_items')||'[]'),
   groups:JSON.parse(localStorage.getItem('id_groups')||'["Stray Kids"]'),
+  requests:JSON.parse(localStorage.getItem('id_requests')||'[]'),
   typeFilter:'all',
   groupFilter:'all'
 };
 
-function save(){localStorage.setItem('id_items',JSON.stringify(state.items));localStorage.setItem('id_groups',JSON.stringify(state.groups))}
+function save(){localStorage.setItem('id_items',JSON.stringify(state.items));localStorage.setItem('id_groups',JSON.stringify(state.groups));localStorage.setItem('id_requests',JSON.stringify(state.requests))}
 
 function showSection(s){
   ['hero','browse','about','request'].forEach(x=>document.getElementById(x+'-section').style.display=x===s?'block':'none');
@@ -433,6 +439,8 @@ function renderGroupFilters(){
 }
 
 function submitRequest(){
+  const req={name:document.getElementById('req-name').value.trim()||'Anonymous',type:document.getElementById('req-type').value||'—',group:document.getElementById('req-group').value.trim()||'—',era:document.getElementById('req-era').value.trim()||'—',details:document.getElementById('req-details').value.trim()||'—',date:new Date().toLocaleDateString()};
+  state.requests.push(req);save();
   document.getElementById('req-success').style.display='block';
   ['req-name','req-group','req-era','req-details'].forEach(id=>document.getElementById(id).value='');
   document.getElementById('req-type').value='';
@@ -449,14 +457,29 @@ function checkPin(){
     document.getElementById('admin-logged').style.display='block';
     document.getElementById('pin-input').value='';
     document.getElementById('pin-error').style.display='none';
-    renderAdminItems();renderAdminGroups();renderEmojiGrid();populateGroupSelect();
+    renderAdminItems();renderAdminGroups();renderEmojiGrid();populateGroupSelect();renderRequests();
   } else {document.getElementById('pin-error').style.display='block'}
 }
 
 function setAdminTab(t){
-  document.querySelectorAll('.admin-tab').forEach((b,i)=>b.classList.toggle('active',['items','add','groups'][i]===t));
-  document.querySelectorAll('.admin-content').forEach((c,i)=>c.classList.toggle('active',['tab-items','tab-add','tab-groups'][i]==='tab-'+t));
+  const tabs=['items','add','groups','requests'];
+  document.querySelectorAll('.admin-tab').forEach((b,i)=>b.classList.toggle('active',tabs[i]===t));
+  document.querySelectorAll('.admin-content').forEach((c,i)=>c.classList.toggle('active','tab-'+tabs[i]==='tab-'+t));
+  if(t==='requests')renderRequests();
 }
+
+function renderRequests(){
+  const list=document.getElementById('req-list');
+  const none=document.getElementById('no-req-msg');
+  // update tab badge
+  const tab=document.getElementById('req-tab');
+  if(state.requests.length>0)tab.textContent='Requests ('+state.requests.length+')';
+  if(state.requests.length===0){list.innerHTML='';none.style.display='block';return}
+  none.style.display='none';
+  list.innerHTML='<div class="admin-item-list">'+state.requests.slice().reverse().map((r,i)=>`<div class="admin-item" style="flex-direction:column;align-items:flex-start;gap:6px"><div style="display:flex;justify-content:space-between;width:100%;align-items:center"><span style="font-size:.82rem;font-weight:500;color:var(--text)">${r.name} <span style="color:var(--muted);font-weight:400">· ${r.date}</span></span><button class="admin-del" onclick="deleteRequest(${state.requests.length-1-i})">Clear</button></div><div style="font-size:.78rem;color:var(--muted);line-height:1.7"><span style="color:var(--accent)">${r.type}</span> · ${r.group} · ${r.era}<br/>${r.details!=='—'?r.details:''}</div></div>`).join('')+'</div>';
+}
+
+function deleteRequest(i){state.requests.splice(i,1);save();renderRequests()}
 
 function renderAdminItems(){
   const list=document.getElementById('admin-item-list');
