@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>idol drops 🌸</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500&family=Caveat:wght@500;700&display=swap" rel="stylesheet"/>
+<style>
+:root {
+  --pink: #f4a7c3;
+  --blush: #fce4ec;
+  --lilac: #e8d5f5;
+  --sky: #d4eeff;
+  --cream: #fff8f5;
+  --text: #4a3040;
+  --muted: #9b7a8a;
+  --accent: #e06fa0;
+  --white: #ffffff;
+  --border: rgba(244,167,195,0.25);
+  --border-hover: rgba(244,167,195,0.5);
+  --input-bg: #fff8f5;
+  --tag-bg: #fce4ec;
+  --tag-text: #c05080;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--text);line-height:1.6;min-height:100vh;overflow-x:hidden;cursor:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 20 20'%3E%3Ccircle cx='10' cy='10' r='4' fill='%23f4a7c3'/%3E%3C/svg%3E") 10 10,auto}
+a{color:inherit;text-decoration:none}
+
+.blob-bg{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+.blob{position:absolute;border-radius:50%;filter:blur(70px);opacity:.45}
+.blob-1{width:500px;height:500px;background:var(--lilac);top:-150px;left:-100px;animation:drift 14s ease-in-out infinite alternate}
+.blob-2{width:400px;height:400px;background:var(--pink);top:40%;right:-120px;animation:drift 18s ease-in-out infinite alternate-reverse}
+.blob-3{width:350px;height:350px;background:var(--sky);bottom:-100px;left:30%;animation:drift 10s ease-in-out infinite alternate}
+@keyframes drift{from{transform:translate(0,0) scale(1)}to{transform:translate(30px,25px) scale(1.08)}}
+
+nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:18px 48px;background:rgba(255,248,245,.75);backdrop-filter:blur(14px);border-bottom:1px solid var(--border)}
+.nav-logo{font-family:'Caveat',cursive;font-size:1.7rem;color:var(--accent);text-decoration:none;letter-spacing:.02em}
+.header-nav{display:flex;gap:8px}
+.nav-btn{font-size:.75rem;font-weight:500;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);padding:7px 16px;border-radius:99px;border:1.5px solid transparent;cursor:pointer;background:none;font-family:inherit;transition:all .18s}
+.nav-btn:hover{color:var(--accent);border-color:var(--border-hover)}
+.nav-btn.active{color:var(--accent);border-color:rgba(224,111,160,0.4);background:rgba(224,111,160,0.07)}
+
+main{position:relative;z-index:1}
+
+/* HERO */
+#hero-section{min-height:100vh;display:flex;flex-direction:column;justify-content:center;max-width:1100px;margin:0 auto;padding:120px 48px 80px;position:relative}
+.hero-tag{display:inline-block;background:var(--pink);color:var(--white);font-size:.78rem;font-weight:500;letter-spacing:.1em;text-transform:uppercase;padding:6px 16px;border-radius:99px;margin-bottom:24px;animation:fadeUp .6s ease both}
+.hero-title{font-family:'Playfair Display',serif;font-size:clamp(3.2rem,8vw,6.5rem);line-height:1.05;color:var(--text);animation:fadeUp .7s .1s ease both}
+.hero-title em{color:var(--accent);font-style:italic}
+.hero-sub{margin-top:24px;max-width:480px;font-size:1.05rem;line-height:1.7;color:var(--muted);animation:fadeUp .7s .2s ease both}
+.hero-btns{margin-top:40px;display:flex;gap:16px;flex-wrap:wrap;animation:fadeUp .7s .3s ease both}
+.btn{padding:14px 32px;border-radius:99px;font-size:.92rem;font-weight:500;cursor:pointer;text-decoration:none;transition:transform .2s,box-shadow .2s;border:none;font-family:inherit}
+.btn:hover{transform:translateY(-2px)}
+.btn-primary{background:var(--accent);color:#fff;box-shadow:0 8px 24px rgba(224,111,160,.35)}
+.btn-primary:hover{box-shadow:0 12px 30px rgba(224,111,160,.5)}
+.btn-ghost{background:transparent;color:var(--accent);border:1.5px solid var(--pink)}
+.btn-ghost:hover{background:var(--blush)}
+
+.hero-floaties{position:absolute;right:5%;top:15%;pointer-events:none;animation:fadeUp .9s .4s ease both}
+.hero-floaties svg{width:320px;opacity:.7}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:translateY(0)}}
+
+/* BROWSE LAYOUT */
+#browse-section{display:none}
+.browse-wrap{max-width:1100px;margin:0 auto;padding:100px 48px 80px;display:flex;gap:36px}
+.sidebar{width:190px;flex-shrink:0;padding-top:12px}
+.sidebar-section{margin-bottom:28px}
+.sidebar-label{font-size:.68rem;font-weight:500;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:10px;display:block}
+.filter-btn{display:flex;align-items:center;gap:8px;width:100%;padding:7px 11px;border-radius:10px;border:none;background:none;font-family:inherit;font-size:.84rem;color:var(--muted);cursor:pointer;text-align:left;transition:all .15s}
+.filter-btn:hover{color:var(--text);background:rgba(244,167,195,0.12)}
+.filter-btn.active{color:var(--accent);background:rgba(224,111,160,0.08)}
+.filter-dot{width:7px;height:7px;border-radius:50%;background:var(--pink);flex-shrink:0;opacity:.5;transition:opacity .15s}
+.filter-btn.active .filter-dot{opacity:1}
+.filter-count{margin-left:auto;font-size:.7rem;color:var(--muted)}
+
+.content-area{flex:1;min-width:0}
+.content-head{margin-bottom:28px}
+.content-head h2{font-family:'Playfair Display',serif;font-size:1.9rem;font-weight:700;color:var(--text)}
+.content-head p{color:var(--muted);font-size:.85rem;margin-top:6px}
+
+/* CARDS */
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:18px}
+.card{background:var(--white);border-radius:20px;border:1.5px solid var(--border);box-shadow:0 4px 20px rgba(224,111,160,.06);transition:transform .25s,box-shadow .25s,border-color .2s;overflow:hidden;position:relative}
+.card::before{content:'';position:absolute;inset:0;border-radius:20px;background:linear-gradient(135deg,rgba(252,228,236,.5) 0%,transparent 60%);pointer-events:none}
+.card:hover{transform:translateY(-4px);box-shadow:0 14px 36px rgba(224,111,160,.14);border-color:var(--border-hover)}
+.card-thumb{width:100%;aspect-ratio:3/2;background:linear-gradient(135deg,var(--blush),var(--lilac));display:flex;align-items:center;justify-content:center;font-size:2.6rem;border-bottom:1.5px solid var(--border)}
+.card-body{padding:14px 16px}
+.card-type{font-size:.68rem;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);margin-bottom:4px}
+.card-title{font-family:'Playfair Display',serif;font-size:1rem;font-weight:700;color:var(--text);line-height:1.3;margin-bottom:3px}
+.card-group{font-size:.8rem;color:var(--muted);margin-bottom:10px}
+.card-tag{display:inline-block;font-size:.68rem;background:var(--tag-bg);color:var(--tag-text);padding:3px 10px;border-radius:99px;margin-bottom:12px}
+.card-dl{display:flex;align-items:center;justify-content:center;gap:6px;font-size:.82rem;font-weight:500;color:var(--accent);background:rgba(224,111,160,0.08);border:1.5px solid rgba(224,111,160,0.25);padding:8px;border-radius:10px;cursor:pointer;transition:background .18s;width:100%}
+.card-dl:hover{background:rgba(224,111,160,0.15)}
+
+.empty-state{text-align:center;padding:80px 24px;color:var(--muted)}
+.empty-state p{font-size:.92rem;margin-top:10px}
+
+/* ABOUT */
+#about-section{display:none}
+.about-wrap{max-width:1100px;margin:0 auto;padding:100px 48px 80px;display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center}
+.about-blob-art{width:260px;height:260px;border-radius:50% 40% 60% 30% / 40% 60% 30% 60%;background:linear-gradient(135deg,var(--blush),var(--lilac));display:flex;align-items:center;justify-content:center;font-size:5rem;animation:morph 8s ease-in-out infinite;box-shadow:0 20px 60px rgba(224,111,160,.2)}
+@keyframes morph{0%,100%{border-radius:50% 40% 60% 30% / 40% 60% 30% 60%}33%{border-radius:60% 30% 40% 50% / 60% 40% 50% 30%}66%{border-radius:30% 60% 50% 40% / 50% 30% 60% 40%}}
+.section-label{font-size:.75rem;font-weight:500;letter-spacing:.12em;text-transform:uppercase;color:var(--pink);margin-bottom:10px;display:block}
+.section-title{font-family:'Playfair Display',serif;font-size:clamp(1.8rem,3.5vw,2.5rem);color:var(--text);margin-bottom:14px}
+.about-text{color:var(--muted);font-size:.95rem;line-height:1.8}
+.about-pills{display:flex;flex-wrap:wrap;gap:10px;margin-top:22px}
+.pill{background:var(--blush);color:var(--accent);font-size:.78rem;padding:6px 14px;border-radius:99px;font-weight:500}
+
+/* REQUEST */
+#request-section{display:none}
+.request-wrap{max-width:1100px;margin:0 auto;padding:100px 48px 80px}
+.req-header{text-align:center;margin-bottom:40px}
+.form-card{background:var(--white);border-radius:24px;padding:44px;max-width:580px;margin:0 auto;border:1.5px solid var(--border);box-shadow:0 8px 40px rgba(224,111,160,.08)}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.form-group{display:flex;flex-direction:column;gap:8px;margin-bottom:14px}
+.form-group label{font-size:.74rem;font-weight:500;letter-spacing:.07em;text-transform:uppercase;color:var(--muted)}
+.form-group input,.form-group select,.form-group textarea{background:var(--input-bg);border:1.5px solid var(--border);border-radius:11px;color:var(--text);font-family:inherit;font-size:.9rem;padding:11px 14px;outline:none;transition:border-color .2s,box-shadow .2s}
+.form-group input:focus,.form-group select:focus,.form-group textarea:focus{border-color:var(--pink);box-shadow:0 0 0 3px rgba(244,167,195,.18)}
+.form-group textarea{resize:vertical;min-height:90px}
+.form-group select option{background:#fff8f5}
+.btn-submit{width:100%;padding:14px;border-radius:99px;border:none;background:linear-gradient(135deg,var(--pink),var(--accent));color:#fff;font-family:'DM Sans',sans-serif;font-size:.95rem;font-weight:500;cursor:pointer;transition:opacity .18s,transform .2s;margin-top:8px;box-shadow:0 8px 24px rgba(224,111,160,.35)}
+.btn-submit:hover{opacity:.9;transform:translateY(-1px)}
+.success-note{display:none;text-align:center;margin-top:14px;font-family:'Caveat',cursive;font-size:1.3rem;color:var(--accent)}
+
+/* ADMIN */
+#admin-toggle{position:fixed;bottom:22px;right:22px;width:40px;height:40px;border-radius:50%;background:var(--white);border:1.5px solid var(--border);color:var(--muted);font-size:.9rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .18s;z-index:99;box-shadow:0 4px 16px rgba(224,111,160,.12)}
+#admin-toggle:hover{border-color:var(--border-hover);color:var(--accent)}
+
+.admin-overlay{display:none;position:fixed;inset:0;z-index:200;background:rgba(74,48,64,0.4);backdrop-filter:blur(4px);align-items:center;justify-content:center}
+.admin-overlay.open{display:flex}
+.admin-panel{background:var(--cream);border:1.5px solid var(--border);border-radius:20px;width:min(560px,92vw);max-height:88vh;overflow-y:auto;padding:32px;box-shadow:0 20px 60px rgba(224,111,160,.15)}
+.admin-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:22px}
+.admin-header h3{font-family:'Playfair Display',serif;font-size:1.2rem;color:var(--text)}
+.admin-close{background:none;border:none;color:var(--muted);font-size:1.3rem;cursor:pointer;line-height:1}
+.admin-close:hover{color:var(--text)}
+
+.admin-tabs{display:flex;gap:4px;margin-bottom:22px;background:var(--blush);padding:4px;border-radius:12px}
+.admin-tab{flex:1;padding:8px;border:none;border-radius:9px;font-family:inherit;font-size:.78rem;font-weight:500;cursor:pointer;background:none;color:var(--muted);transition:all .15s}
+.admin-tab.active{background:var(--white);color:var(--accent);box-shadow:0 2px 8px rgba(224,111,160,.12)}
+
+.admin-content{display:none}
+.admin-content.active{display:block}
+
+.pin-form{text-align:center;padding:10px 0}
+.pin-form p{color:var(--muted);font-size:.9rem;margin-bottom:18px}
+.pin-input{background:var(--white);border:1.5px solid var(--border);border-radius:11px;color:var(--text);font-family:inherit;font-size:1.1rem;letter-spacing:.4em;padding:12px 16px;text-align:center;outline:none;width:160px;transition:border-color .2s;display:block;margin:0 auto 16px}
+.pin-input:focus{border-color:var(--pink)}
+.pin-error{color:#e06060;font-size:.8rem;margin-top:8px;display:none}
+.pin-submit{background:var(--accent);color:#fff;border:none;border-radius:99px;font-family:inherit;font-weight:500;font-size:.88rem;padding:10px 28px;cursor:pointer}
+
+.admin-item-list{display:flex;flex-direction:column;gap:8px;margin-bottom:18px}
+.admin-item{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:11px 14px;background:var(--white);border:1.5px solid var(--border);border-radius:12px}
+.admin-item-info{flex:1;min-width:0}
+.admin-item-name{font-size:.87rem;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--text)}
+.admin-item-meta{font-size:.74rem;color:var(--muted);margin-top:2px}
+.admin-del{background:none;border:1.5px solid transparent;border-radius:8px;color:var(--muted);font-size:.76rem;padding:4px 10px;cursor:pointer;font-family:inherit;transition:all .15s}
+.admin-del:hover{color:#c05050;border-color:rgba(192,80,80,0.25);background:rgba(192,80,80,0.06)}
+
+.add-form-title{font-family:'Playfair Display',serif;font-size:1rem;color:var(--text);margin-bottom:14px}
+.admin-form-group{display:flex;flex-direction:column;gap:7px;margin-bottom:13px}
+.admin-form-group label{font-size:.72rem;font-weight:500;letter-spacing:.07em;text-transform:uppercase;color:var(--muted)}
+.admin-form-group input,.admin-form-group select{background:var(--white);border:1.5px solid var(--border);border-radius:10px;color:var(--text);font-family:inherit;font-size:.87rem;padding:10px 13px;outline:none;transition:border-color .2s}
+.admin-form-group input:focus,.admin-form-group select:focus{border-color:var(--pink)}
+.admin-form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:13px}
+.divider-line{border:none;border-top:1px solid var(--border);margin:18px 0}
+
+.emoji-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:5px;margin-top:7px}
+.emoji-opt{font-size:1.3rem;padding:6px;border-radius:8px;border:1.5px solid var(--border);background:none;cursor:pointer;transition:all .15s}
+.emoji-opt:hover,.emoji-opt.selected{background:rgba(224,111,160,0.08);border-color:rgba(224,111,160,0.35)}
+
+.btn-add{width:100%;padding:12px;border-radius:99px;border:none;background:var(--accent);color:#fff;font-family:'DM Sans',sans-serif;font-size:.88rem;font-weight:500;cursor:pointer;transition:opacity .18s;margin-top:4px}
+.btn-add:hover{opacity:.88}
+.mini-success{display:none;color:var(--accent);font-size:.82rem;text-align:center;margin-top:9px;font-family:'Caveat',cursive;font-size:1.1rem}
+
+@media(max-width:768px){
+  nav{padding:16px 24px}
+  .header-nav .nav-btn{font-size:.68rem;padding:5px 10px}
+  #hero-section,.browse-wrap,.about-wrap,.request-wrap{padding-left:20px;padding-right:20px}
+  .hero-floaties{display:none}
+  .about-wrap{grid-template-columns:1fr}
+  .browse-wrap{flex-direction:column}
+  .sidebar{width:100%}
+  .sidebar-section{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px}
+  .sidebar-label{display:none}
+  .filter-btn{width:auto;padding:5px 12px;border:1.5px solid var(--border);border-radius:99px}
+  .filter-btn.active{border-color:rgba(224,111,160,.4)}
+  .filter-count{display:none}
+  .form-row,.admin-form-row{grid-template-columns:1fr}
+}
+
+.reveal{opacity:0;transform:translateY(26px);transition:opacity .65s ease,transform .65s ease}
+.reveal.visible{opacity:1;transform:none}
+</style>
+</head>
+<body>
+
+<div class="blob-bg">
+  <div class="blob blob-1"></div>
+  <div class="blob blob-2"></div>
+  <div class="blob blob-3"></div>
+</div>
+
+<nav>
+  <a href="#" class="nav-logo" onclick="showSection('hero')">idol drops ✿</a>
+  <div class="header-nav">
+    <button class="nav-btn" onclick="showSection('browse')">Browse</button>
+    <button class="nav-btn" onclick="showSection('about')">About</button>
+    <button class="nav-btn" onclick="showSection('request')">Request</button>
+  </div>
+</nav>
+
+<main>
+
+<!-- HERO -->
+<div id="hero-section">
+  <div class="hero-tag">✦ free k-pop resources</div>
+  <h1 class="hero-title">your favorite<br/><em>idol drops,</em><br/>all in one place.</h1>
+  <p class="hero-sub">Photocards, wallpapers & more — curated with love and shared for free. For stans, by stans. 🌸</p>
+  <div class="hero-btns">
+    <button class="btn btn-primary" onclick="showSection('browse')">Browse drops</button>
+    <button class="btn btn-ghost" onclick="showSection('request')">Make a request</button>
+  </div>
+  <div class="hero-floaties">
+    <svg viewBox="0 0 340 340" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect x="40" y="60" width="130" height="180" rx="18" fill="#fce4ec" stroke="#f4a7c3" stroke-width="2"/>
+      <rect x="55" y="78" width="100" height="100" rx="12" fill="#f4a7c3" opacity=".5"/>
+      <rect x="55" y="190" width="60" height="8" rx="4" fill="#e8d5f5"/>
+      <rect x="55" y="206" width="40" height="6" rx="3" fill="#f4a7c3" opacity=".6"/>
+      <rect x="185" y="30" width="110" height="155" rx="15" fill="#e8d5f5" stroke="#c9a9e8" stroke-width="1.5"/>
+      <rect x="198" y="45" width="84" height="84" rx="10" fill="#c9a9e8" opacity=".5"/>
+      <rect x="198" y="140" width="50" height="7" rx="3" fill="#f4a7c3"/>
+      <rect x="200" y="200" width="90" height="120" rx="13" fill="#d4eeff" stroke="#8ec8f8" stroke-width="1.5"/>
+      <rect x="212" y="214" width="66" height="66" rx="8" fill="#8ec8f8" opacity=".5"/>
+      <rect x="212" y="291" width="40" height="6" rx="3" fill="#e8d5f5"/>
+      <text x="24" y="46" font-size="22" opacity=".7">✦</text>
+      <text x="300" y="170" font-size="16" opacity=".5">✿</text>
+      <text x="160" y="280" font-size="18" opacity=".6">☁︎</text>
+    </svg>
+  </div>
+</div>
+
+<!-- BROWSE -->
+<div id="browse-section" style="display:none">
+  <div class="browse-wrap">
+    <aside class="sidebar">
+      <div class="sidebar-section">
+        <span class="sidebar-label">Type</span>
+        <button class="filter-btn active" onclick="setTypeFilter('all')" id="type-all"><span class="filter-dot"></span>All<span class="filter-count" id="cnt-all"></span></button>
+        <button class="filter-btn" onclick="setTypeFilter('photocards')" id="type-photocards"><span class="filter-dot"></span>Photocards<span class="filter-count" id="cnt-photocards"></span></button>
+        <button class="filter-btn" onclick="setTypeFilter('wallpapers')" id="type-wallpapers"><span class="filter-dot"></span>Wallpapers<span class="filter-count" id="cnt-wallpapers"></span></button>
+        <button class="filter-btn" onclick="setTypeFilter('other')" id="type-other"><span class="filter-dot"></span>Other<span class="filter-count" id="cnt-other"></span></button>
+      </div>
+      <div class="sidebar-section">
+        <span class="sidebar-label">Group</span>
+        <div id="group-filters"></div>
+      </div>
+    </aside>
+    <div class="content-area">
+      <div class="content-head">
+        <h2 id="page-title">All drops</h2>
+        <p id="result-count" style="color:var(--muted);font-size:.85rem;margin-top:6px"></p>
+      </div>
+      <div class="grid" id="cards-grid"></div>
+      <div class="empty-state" id="empty-state" style="display:none">
+        <div style="font-size:2.2rem">🌸</div>
+        <p>Nothing here yet — check back soon or make a request!</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ABOUT -->
+<div id="about-section" style="display:none">
+  <div class="about-wrap">
+    <div style="display:flex;justify-content:center">
+      <div class="about-blob-art">🌸</div>
+    </div>
+    <div class="reveal">
+      <span class="section-label">✦ about</span>
+      <h2 class="section-title">hi, welcome! ☁️</h2>
+      <p class="about-text">idol drops is a free K-pop resource hub — photocards, wallpapers, and whatever else I find worth sharing. No paywalls, no sign-ups, just free stuff for the community.<br/><br/>Everything here is curated by me. If you're looking for something specific, hit the Request tab!</p>
+      <div class="about-pills">
+        <span class="pill">Stray Kids</span>
+        <span class="pill">Free forever</span>
+        <span class="pill">Fan-run</span>
+        <span class="pill">Updated regularly</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- REQUEST -->
+<div id="request-section" style="display:none">
+  <div class="request-wrap">
+    <div class="req-header reveal">
+      <span class="section-label" style="justify-content:center;display:flex">✦ request</span>
+      <h2 class="section-title" style="text-align:center">want something specific?</h2>
+    </div>
+    <div class="form-card reveal">
+      <div class="form-row">
+        <div class="form-group"><label>Stan name</label><input type="text" id="req-name" placeholder="e.g. stay4ever"/></div>
+        <div class="form-group"><label>Type</label><select id="req-type"><option value="">Select...</option><option>Photocards</option><option>Wallpapers</option><option>Other</option></select></div>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label>Group / Artist</label><input type="text" id="req-group" placeholder="e.g. Stray Kids"/></div>
+        <div class="form-group"><label>Era / Album</label><input type="text" id="req-era" placeholder="e.g. 5-STAR"/></div>
+      </div>
+      <div class="form-group"><label>Details</label><textarea id="req-details" placeholder="Specific members, versions, etc."></textarea></div>
+      <button class="btn-submit" onclick="submitRequest()">Send request ✿</button>
+      <p class="success-note" id="req-success">request sent! i'll get on it 🌸</p>
+    </div>
+  </div>
+</div>
+
+</main>
+
+<!-- ADMIN TOGGLE -->
+<button id="admin-toggle" onclick="openAdmin()" title="Admin">⚙</button>
+
+<!-- ADMIN PANEL -->
+<div class="admin-overlay" id="admin-overlay" onclick="handleOverlayClick(event)">
+  <div class="admin-panel">
+    <div class="admin-header">
+      <h3>Admin panel ✿</h3>
+      <button class="admin-close" onclick="closeAdmin()">✕</button>
+    </div>
+    <div id="pin-screen">
+      <div class="pin-form">
+        <p>Enter your PIN to manage drops.</p>
+        <input type="password" class="pin-input" id="pin-input" maxlength="6" placeholder="••••" onkeydown="if(event.key==='Enter')checkPin()"/>
+        <br/>
+        <button class="pin-submit" onclick="checkPin()">Unlock</button>
+        <p class="pin-error" id="pin-error">Wrong PIN, try again.</p>
+        <p style="color:var(--muted);font-size:.74rem;margin-top:18px">Default PIN: <strong style="color:var(--text)">1234</strong> — change it in the HTML!</p>
+      </div>
+    </div>
+    <div id="admin-logged" style="display:none">
+      <div class="admin-tabs">
+        <button class="admin-tab active" onclick="setAdminTab('items')">Items</button>
+        <button class="admin-tab" onclick="setAdminTab('add')">Add new</button>
+        <button class="admin-tab" onclick="setAdminTab('groups')">Groups</button>
+      </div>
+      <div class="admin-content active" id="tab-items">
+        <div class="admin-item-list" id="admin-item-list"></div>
+        <p id="no-items-msg" style="color:var(--muted);font-size:.85rem;text-align:center;display:none">No items yet — add some!</p>
+      </div>
+      <div class="admin-content" id="tab-add">
+        <p class="add-form-title">Add a new drop</p>
+        <div class="admin-form-group"><label>Title</label><input type="text" id="add-title" placeholder="e.g. 5-STAR Photocards"/></div>
+        <div class="admin-form-row">
+          <div class="admin-form-group" style="margin:0"><label>Group</label><select id="add-group"></select></div>
+          <div class="admin-form-group" style="margin:0"><label>Type</label><select id="add-type"><option value="photocards">Photocards</option><option value="wallpapers">Wallpapers</option><option value="other">Other</option></select></div>
+        </div>
+        <div class="admin-form-group"><label>Download link (GitHub Releases URL)</label><input type="url" id="add-link" placeholder="https://github.com/…"/></div>
+        <div class="admin-form-group"><label>Details (optional)</label><input type="text" id="add-details" placeholder="Full set · ZIP · 38 cards"/></div>
+        <div class="admin-form-group"><label>Icon</label><div class="emoji-grid" id="emoji-grid"></div><input type="hidden" id="add-icon" value="🌸"/></div>
+        <button class="btn-add" onclick="addItem()">Add drop</button>
+        <p class="mini-success" id="add-success">Added! 🌸</p>
+      </div>
+      <div class="admin-content" id="tab-groups">
+        <div class="admin-item-list" id="admin-group-list"></div>
+        <hr class="divider-line"/>
+        <p class="add-form-title">Add a group</p>
+        <div class="admin-form-group"><label>Group name</label><input type="text" id="add-group-name" placeholder="e.g. aespa"/></div>
+        <button class="btn-add" onclick="addGroup()">Add group</button>
+        <p class="mini-success" id="group-success">Added! 🌸</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const ADMIN_PIN='1234';
+const EMOJIS=['🌸','🩷','💜','🌙','⭐','🎀','🌷','💫','🦋','🌺','🎵','✨'];
+
+let state={
+  items:JSON.parse(localStorage.getItem('id_items')||'[]'),
+  groups:JSON.parse(localStorage.getItem('id_groups')||'["Stray Kids"]'),
+  typeFilter:'all',
+  groupFilter:'all'
+};
+
+function save(){localStorage.setItem('id_items',JSON.stringify(state.items));localStorage.setItem('id_groups',JSON.stringify(state.groups))}
+
+function showSection(s){
+  ['hero','browse','about','request'].forEach(x=>document.getElementById(x+'-section').style.display=x===s?'block':'none');
+  document.querySelectorAll('.nav-btn').forEach((b,i)=>b.classList.toggle('active',['browse','about','request'][i]===s));
+  if(s==='browse'){renderCards();renderGroupFilters()}
+  triggerReveal();
+}
+
+function triggerReveal(){
+  setTimeout(()=>{
+    document.querySelectorAll('.reveal').forEach(el=>{
+      const obs=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');obs.unobserve(e.target)}})},{threshold:.1});
+      obs.observe(el);
+    });
+  },50);
+}
+
+function setTypeFilter(t){
+  state.typeFilter=t;
+  document.querySelectorAll('[id^="type-"]').forEach(b=>b.classList.remove('active'));
+  document.getElementById('type-'+t).classList.add('active');
+  renderCards();
+}
+function setGroupFilter(g){
+  state.groupFilter=g;
+  document.querySelectorAll('.gf-btn').forEach(b=>b.classList.toggle('active',b.dataset.g===g));
+  renderCards();
+}
+
+function renderCards(){
+  const grid=document.getElementById('cards-grid');
+  const empty=document.getElementById('empty-state');
+  let items=state.items;
+  if(state.typeFilter!=='all') items=items.filter(i=>i.type===state.typeFilter);
+  if(state.groupFilter!=='all') items=items.filter(i=>i.group===state.groupFilter);
+  document.getElementById('result-count').textContent=items.length+' item'+(items.length!==1?'s':'');
+  document.getElementById('page-title').textContent=state.groupFilter!=='all'?state.groupFilter:state.typeFilter!=='all'?state.typeFilter.charAt(0).toUpperCase()+state.typeFilter.slice(1):'All drops';
+  if(items.length===0){grid.innerHTML='';empty.style.display='block';return}
+  empty.style.display='none';
+  grid.innerHTML=items.map(item=>`<div class="card"><div class="card-thumb">${item.icon||'🌸'}</div><div class="card-body"><div class="card-type">${item.type}</div><div class="card-title">${item.title}</div><div class="card-group">${item.group}</div>${item.details?`<span class="card-tag">${item.details}</span>`:'<br/>'}<a href="${item.link}" target="_blank" rel="noopener" class="card-dl">Download ↗</a></div></div>`).join('');
+  ['all','photocards','wallpapers','other'].forEach(t=>{const c=t==='all'?state.items.length:state.items.filter(i=>i.type===t).length;document.getElementById('cnt-'+t).textContent=c?(' '+c):'';});
+}
+
+function renderGroupFilters(){
+  const cont=document.getElementById('group-filters');
+  const groups=['all',...state.groups];
+  cont.innerHTML=groups.map(g=>`<button class="filter-btn gf-btn${state.groupFilter===g?' active':''}" data-g="${g}" onclick="setGroupFilter(this.dataset.g)"><span class="filter-dot"></span>${g==='all'?'All groups':g}</button>`).join('');
+}
+
+function submitRequest(){
+  document.getElementById('req-success').style.display='block';
+  ['req-name','req-group','req-era','req-details'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('req-type').value='';
+  setTimeout(()=>document.getElementById('req-success').style.display='none',3500);
+}
+
+function openAdmin(){document.getElementById('admin-overlay').classList.add('open')}
+function closeAdmin(){document.getElementById('admin-overlay').classList.remove('open')}
+function handleOverlayClick(e){if(e.target===document.getElementById('admin-overlay'))closeAdmin()}
+
+function checkPin(){
+  if(document.getElementById('pin-input').value===ADMIN_PIN){
+    document.getElementById('pin-screen').style.display='none';
+    document.getElementById('admin-logged').style.display='block';
+    document.getElementById('pin-input').value='';
+    document.getElementById('pin-error').style.display='none';
+    renderAdminItems();renderAdminGroups();renderEmojiGrid();populateGroupSelect();
+  } else {document.getElementById('pin-error').style.display='block'}
+}
+
+function setAdminTab(t){
+  document.querySelectorAll('.admin-tab').forEach((b,i)=>b.classList.toggle('active',['items','add','groups'][i]===t));
+  document.querySelectorAll('.admin-content').forEach((c,i)=>c.classList.toggle('active',['tab-items','tab-add','tab-groups'][i]==='tab-'+t));
+}
+
+function renderAdminItems(){
+  const list=document.getElementById('admin-item-list');
+  const none=document.getElementById('no-items-msg');
+  if(state.items.length===0){list.innerHTML='';none.style.display='block';return}
+  none.style.display='none';
+  list.innerHTML=state.items.map((item,i)=>`<div class="admin-item"><span style="font-size:1.3rem">${item.icon||'🌸'}</span><div class="admin-item-info"><div class="admin-item-name">${item.title}</div><div class="admin-item-meta">${item.group} · ${item.type}</div></div><button class="admin-del" onclick="deleteItem(${i})">Remove</button></div>`).join('');
+}
+
+function renderAdminGroups(){
+  const list=document.getElementById('admin-group-list');
+  if(state.groups.length===0){list.innerHTML='<p style="color:var(--muted);font-size:.85rem;text-align:center">No groups yet.</p>';return}
+  list.innerHTML=state.groups.map((g,i)=>`<div class="admin-item"><div class="admin-item-info"><div class="admin-item-name">${g}</div></div><button class="admin-del" onclick="deleteGroup(${i})">Remove</button></div>`).join('');
+}
+
+function renderEmojiGrid(){
+  document.getElementById('emoji-grid').innerHTML=EMOJIS.map(e=>`<button type="button" class="emoji-opt${document.getElementById('add-icon').value===e?' selected':''}" onclick="selectEmoji('${e}')">${e}</button>`).join('');
+}
+function selectEmoji(e){document.getElementById('add-icon').value=e;document.querySelectorAll('.emoji-opt').forEach(b=>b.classList.toggle('selected',b.textContent===e))}
+function populateGroupSelect(){document.getElementById('add-group').innerHTML=state.groups.map(g=>`<option value="${g}">${g}</option>`).join('')}
+
+function addItem(){
+  const title=document.getElementById('add-title').value.trim();
+  const group=document.getElementById('add-group').value;
+  const type=document.getElementById('add-type').value;
+  const link=document.getElementById('add-link').value.trim();
+  const details=document.getElementById('add-details').value.trim();
+  const icon=document.getElementById('add-icon').value;
+  if(!title||!link)return;
+  state.items.push({title,group,type,link,details,icon});
+  save();renderCards();renderGroupFilters();renderAdminItems();
+  ['add-title','add-link','add-details'].forEach(id=>document.getElementById(id).value='');
+  const s=document.getElementById('add-success');s.style.display='block';
+  setTimeout(()=>s.style.display='none',2000);
+}
+
+function deleteItem(i){state.items.splice(i,1);save();renderCards();renderGroupFilters();renderAdminItems()}
+
+function addGroup(){
+  const name=document.getElementById('add-group-name').value.trim();
+  if(!name||state.groups.includes(name))return;
+  state.groups.push(name);save();renderGroupFilters();renderAdminGroups();populateGroupSelect();
+  document.getElementById('add-group-name').value='';
+  const s=document.getElementById('group-success');s.style.display='block';
+  setTimeout(()=>s.style.display='none',2000);
+}
+function deleteGroup(i){state.groups.splice(i,1);save();renderGroupFilters();renderAdminGroups();populateGroupSelect()}
+
+triggerReveal();
+</script>
+</body>
+</html>
