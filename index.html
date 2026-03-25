@@ -379,21 +379,34 @@ main{position:relative;z-index:1}
 <script>
 const ADMIN_PIN='1212';
 const EMOJIS=['🌸','🩷','💜','🌙','⭐','🎀','🌷','💫','🦋','🌺','🎵','✨'];
+const BIN_ID='69c2ef42b7ec241ddc9cc676';
+const API_KEY='$2a$10$5ZK2toXgCldyNCFQX.5b2OnCjgYNxyWZxZTgt8C3cxP5rREwEZP4S';
+const BIN_URL='https://api.jsonbin.io/v3/b/'+BIN_ID;
 
-let state={
-  items:JSON.parse(localStorage.getItem('id_items')||'[]'),
-  groups:JSON.parse(localStorage.getItem('id_groups')||'["Stray Kids"]'),
-  requests:JSON.parse(localStorage.getItem('id_requests')||'[]'),
-  typeFilter:'all',
-  groupFilter:'all'
-};
+let state={items:[],groups:[],requests:[],typeFilter:'all',groupFilter:'all'};
 
-function save(){localStorage.setItem('id_items',JSON.stringify(state.items));localStorage.setItem('id_groups',JSON.stringify(state.groups));localStorage.setItem('id_requests',JSON.stringify(state.requests))}
+async function loadData(){
+  document.getElementById('cards-grid').innerHTML='<p style="color:var(--muted);text-align:center;padding:40px">Loading drops... 🌸</p>';
+  try{
+    const res=await fetch(BIN_URL+'/latest',{headers:{'X-Master-Key':API_KEY}});
+    const json=await res.json();
+    state.items=json.record.items||[];
+    state.groups=json.record.groups||[];
+    state.requests=json.record.requests||[];
+  }catch(e){console.error('Load failed',e)}
+  renderCards();renderGroupFilters();
+}
+
+async function save(){
+  try{
+    await fetch(BIN_URL,{method:'PUT',headers:{'Content-Type':'application/json','X-Master-Key':API_KEY},body:JSON.stringify({items:state.items,groups:state.groups,requests:state.requests})});
+  }catch(e){console.error('Save failed',e)}
+}
 
 function showSection(s){
   ['hero','browse','about','request'].forEach(x=>document.getElementById(x+'-section').style.display=x===s?'block':'none');
   document.querySelectorAll('.nav-btn').forEach((b,i)=>b.classList.toggle('active',['browse','about','request'][i]===s));
-  if(s==='browse'){renderCards();renderGroupFilters()}
+  if(s==='browse'){loadData()}
   triggerReveal();
 }
 
@@ -529,6 +542,7 @@ function addGroup(){
 function deleteGroup(i){state.groups.splice(i,1);save();renderGroupFilters();renderAdminGroups();populateGroupSelect()}
 
 triggerReveal();
+loadData();
 </script>
 </body>
 </html>
